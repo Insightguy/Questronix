@@ -25,7 +25,7 @@ public class CRUDcontroller {
 	private Connection conn = DBUtility.getConnection();
 
 	@GET
-	@Path("/Get")
+	//@Path("/Get")
 	@Produces(MediaType.TEXT_HTML)
 	public String SeeThings() {
 		
@@ -62,7 +62,7 @@ public class CRUDcontroller {
 	}
 	
 	@PUT
-	@Path("/Put")
+	//@Path("/Put")
 	@Consumes(MediaType.TEXT_HTML)
 	@Produces(MediaType.TEXT_HTML)
 	public String addThings(@QueryParam("Name") String name, @QueryParam("Age") int age) {
@@ -82,7 +82,7 @@ public class CRUDcontroller {
 	}
 	
 	@DELETE
-	@Path("/Delete")
+	//@Path("/Delete")
 	@Consumes(MediaType.TEXT_HTML)
 	@Produces(MediaType.TEXT_HTML)
 	public String removeThings(@QueryParam("ID") int ID) {
@@ -100,5 +100,50 @@ public class CRUDcontroller {
 		return Insersion;
 	}
 	
+	@POST
+	//@Path("/Post")
+	@Consumes(MediaType.TEXT_HTML)
+	@Produces(MediaType.TEXT_HTML)
+	public String makeThings(@QueryParam("ID") int ID,@QueryParam("Name") String name, @QueryParam("Age") int age) {
 
+		String Insersion = "";
+		try {
+			Insersion += "<h1>asdf1</h1>";
+			PreparedStatement preparedStatement = conn.prepareStatement( "SELECT * FROM test WHERE ID = ?" );
+			preparedStatement.setInt(1, ID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if( resultSet.next() ) {
+				try {
+					Insersion += "<h1>asdf2</h1>";
+					String query = "UPDATE test SET Name=?, Age=? WHERE ID=?";
+					PreparedStatement preparedStatement1 = conn.prepareStatement( query );
+					preparedStatement1.setString( 1, name );
+					preparedStatement1.setInt( 2, age );
+					preparedStatement1.setInt( 3, ID );
+					preparedStatement1.executeUpdate();
+					preparedStatement1.close();
+					Insersion += "<h1>Entry " + ID + " has been updated to Name: " + name + " and Age: " + age + "</h1>";
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} else {
+				Insersion += "<h1>asdf3</h1>";
+				try (PreparedStatement stmt = conn.prepareStatement( "INSERT INTO test (Name, Age) VALUES (?,?)" );){
+					stmt.setString( 1, name );
+					stmt.setInt( 2, age );
+					stmt.executeUpdate();
+					stmt.close();
+					Insersion += "<h1>A new entry has been added with Name: " + name + " and Age: " + age + "</h1>";
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			resultSet.close();
+			preparedStatement.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		Insersion += "<h1>asdf4</h1>";
+		return Insersion;
+	}
 }
