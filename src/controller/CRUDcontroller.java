@@ -67,7 +67,7 @@ public class CRUDcontroller {
 	public String addThings(@QueryParam("Name") String name, @QueryParam("Age") int age) {
 		
 		String Insersion = "";
-		try (PreparedStatement stmt = conn.prepareStatement( "INSERT INTO test (Name, Age) VALUES (,?,?)" );){
+		try (PreparedStatement stmt = conn.prepareStatement( "INSERT INTO test (Name, Age) VALUES (?,?)" );){
 			stmt.setString( 1, name );
 			stmt.setInt( 2, age );
 			stmt.executeUpdate();
