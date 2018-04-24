@@ -9,6 +9,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Application;
 
 import java.sql.Connection;
@@ -22,7 +23,7 @@ import controller.DBUtility;
 public class CRUDcontroller {
 	
 	private Connection conn = DBUtility.getConnection();
-	
+
 	@GET
 	@Path("/Get")
 	@Produces(MediaType.TEXT_HTML)
@@ -73,6 +74,25 @@ public class CRUDcontroller {
 			stmt.executeUpdate();
 			stmt.close();
 			Insersion += "<h1>A new entry has been added with Name: " + name + " and Age: " + age + "</h1>";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		Insersion += "<h1>asdf</h1>";
+		return Insersion;
+	}
+	
+	@DELETE
+	@Path("/Delete")
+	@Consumes(MediaType.TEXT_HTML)
+	@Produces(MediaType.TEXT_HTML)
+	public String removeThings(@QueryParam("ID") int ID) {
+		
+		String Insersion = "";
+		try (PreparedStatement stmt = conn.prepareStatement( "DELETE FROM test WHERE ID = ?" );){
+			stmt.setInt( 1, ID );
+			stmt.executeUpdate();
+			stmt.close();
+			Insersion += "<h1>Entry Number: " + ID + " Has been wiped</h1>";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
