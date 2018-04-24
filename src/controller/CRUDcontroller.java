@@ -77,7 +77,6 @@ public class CRUDcontroller {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		Insersion += "<h1>asdf</h1>";
 		return Insersion;
 	}
 	
@@ -96,7 +95,6 @@ public class CRUDcontroller {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		Insersion += "<h1>asdf</h1>";
 		return Insersion;
 	}
 	
@@ -108,13 +106,11 @@ public class CRUDcontroller {
 
 		String Insersion = "";
 		try {
-			Insersion += "<h1>asdf1</h1>";
 			PreparedStatement preparedStatement = conn.prepareStatement( "SELECT * FROM test WHERE ID = ?" );
 			preparedStatement.setInt(1, ID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if( resultSet.next() ) {
 				try {
-					Insersion += "<h1>asdf2</h1>";
 					String query = "UPDATE test SET Name=?, Age=? WHERE ID=?";
 					PreparedStatement preparedStatement1 = conn.prepareStatement( query );
 					preparedStatement1.setString( 1, name );
@@ -127,7 +123,6 @@ public class CRUDcontroller {
 					e.printStackTrace();
 				}
 			} else {
-				Insersion += "<h1>asdf3</h1>";
 				try (PreparedStatement stmt = conn.prepareStatement( "INSERT INTO test (Name, Age) VALUES (?,?)" );){
 					stmt.setString( 1, name );
 					stmt.setInt( 2, age );
@@ -143,7 +138,6 @@ public class CRUDcontroller {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		Insersion += "<h1>asdf4</h1>";
 		return Insersion;
 	}
 }
